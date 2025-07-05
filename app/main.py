@@ -2,7 +2,10 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import joblib
+import sys
 import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+import src.ai_assistant as assistant
 
 # Set the page configuration for a professional look
 st.set_page_config(
@@ -93,6 +96,10 @@ if assets:
 
     if generate_button:
         st.session_state.compare_list = [] # Reset comparison on new generation
+        
+        st.session_state.student_adv_rank = student_adv_rank
+        st.session_state.student_main_rank = student_main_rank
+        
         with st.spinner("🧠 Analyzing possibilities with AI..."):
             unique_combinations = df_combined[df_combined['Year'] == 2024].drop_duplicates(subset=['Institute', 'Academic Program Name', 'Quota', 'Seat Type', 'Institute_Type', 'Gender'])
             predict_df = unique_combinations.copy()
@@ -196,3 +203,27 @@ if assets:
                 st.warning("Please select at least 2 branches to enable comparison.")
         else:
             st.info("Use the checkboxes above to select up to 3 branches you want to compare.")
+
+st.markdown("---")
+st.header("🤖 Talk to Your AI Counselor")
+st.markdown("Ask a question about your personalized results to get strategic advice.")
+
+# We use the results stored in session state
+if st.session_state.results_generated:
+    user_question = st.text_input("e.g., 'What is a good strategy for my choice filling?' or 'Compare my top 2 safe options.'")
+
+    if st.button("Ask the AI Assistant", use_container_width=True):
+        if user_question:
+            with st.spinner("🤖 Consulting the AI... please wait."):
+                # Call the function from our new ai_assistant.py file
+                ai_response = assistant.get_ai_insight(
+                    question=user_question,
+                    student_rank_adv=st.session_state.get('student_adv_rank'), # Get ranks from session state
+                    student_rank_main=st.session_state.get('student_main_rank'),
+                    ambitious_df=st.session_state.ambitious_df,
+                    safe_df=st.session_state.safe_df,
+                    backup_df=st.session_state.backup_df
+                )
+                st.markdown(ai_response)
+        else:
+            st.warning("Please ask a question.")
