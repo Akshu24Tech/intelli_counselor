@@ -7,11 +7,17 @@
 **Problem Statement**
 
 **The Solution**
+
 **Key Features**
+
 **Tech Stack**
+
 **Project Structure**
+
 **Setup & Installation**
+
 **Usage**
+
 **Future Scope**
 
 ---
