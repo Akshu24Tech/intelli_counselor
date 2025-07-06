@@ -81,9 +81,9 @@ if assets:
     student_adv_rank = None
     if qualification_status == 'JEE Mains & JEE Advanced':
         student_adv_rank = st.sidebar.number_input("Enter your JEE Advanced Rank:", min_value=1, max_value=40000, value=5000, key='adv_rank')
-        student_main_rank = st.sidebar.number_input("Enter your JEE Main Rank (CRL):", min_value=1, max_value=1000000, value=15000, key='main_rank_adv')
+        student_main_rank = st.sidebar.number_input("Enter your JEE Main Rank (CRL):", min_value=1, max_value=1200000, value=15000, key='main_rank_adv')
     else:
-        student_main_rank = st.sidebar.number_input("Enter your JEE Main Rank (CRL):", min_value=1, max_value=1000000, value=15000, key='main_rank_only')
+        student_main_rank = st.sidebar.number_input("Enter your JEE Main Rank (CRL):", min_value=1, max_value=1200000, value=15000, key='main_rank_only')
 
     available_inst_types = list(df_combined['Institute_Type'].unique())
     if qualification_status == 'JEE Mains only' and 'IIT' in available_inst_types:
